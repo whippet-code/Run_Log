@@ -1,0 +1,8 @@
+/* Custom styles for Run_Log */
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 20px 0;
+}
+

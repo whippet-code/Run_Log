@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Running Progress Tracker</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body
+        class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white"
+    >
+        <div class="container mx-auto px-4 py-8 max-w-6xl">
+            <!-- Header -->
+            <header class="text-center mb-10">
+                <h1
+                    class="text-5xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+                >
+                    Running Progress Tracker
+                </h1>
+                <p class="text-gray-300">
+                    Log your runs and visualize your progress
+                </p>
+            </header>
+
+            <!-- Stats Cards -->
+            <div
+                class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8"
+            >
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all"
+                >
+                    <h3 class="text-gray-300 text-sm mb-2">This Week</h3>
+                    <p class="text-3xl font-bold" id="weekTotal">0</p>
+                    <p class="text-gray-400 text-sm">miles</p>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all"
+                >
+                    <h3 class="text-gray-300 text-sm mb-2">Week - Road</h3>
+                    <p class="text-3xl font-bold text-blue-400" id="weekRoad">
+                        0
+                    </p>
+                    <p class="text-gray-400 text-sm">miles</p>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all"
+                >
+                    <h3 class="text-gray-300 text-sm mb-2">Week - Trail</h3>
+                    <p class="text-3xl font-bold text-green-400" id="weekTrail">
+                        0
+                    </p>
+                    <p class="text-gray-400 text-sm">miles</p>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all"
+                >
+                    <h3 class="text-gray-300 text-sm mb-2">Road Total</h3>
+                    <p class="text-3xl font-bold text-blue-400" id="roadTotal">
+                        0
+                    </p>
+                    <p class="text-gray-400 text-sm">miles</p>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all"
+                >
+                    <h3 class="text-gray-300 text-sm mb-2">Trail Total</h3>
+                    <p
+                        class="text-3xl font-bold text-green-400"
+                        id="trailTotal"
+                    >
+                        0
+                    </p>
+                    <p class="text-gray-400 text-sm">miles</p>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:bg-white/15 transition-all"
+                >
+                    <h3 class="text-gray-300 text-sm mb-2">Combined Total</h3>
+                    <p
+                        class="text-3xl font-bold text-purple-400"
+                        id="combinedTotal"
+                    >
+                        0
+                    </p>
+                    <p class="text-gray-400 text-sm">miles</p>
+                </div>
+            </div>
+
+            <!-- Add Run Form -->
+            <div
+                class="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-8 border border-white/20"
+            >
+                <h2 class="text-2xl font-bold mb-4">Log New Run</h2>
+                <form
+                    id="runForm"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4"
+                >
+                    <div>
+                        <label class="block text-sm mb-2"
+                            >Distance (miles)</label
+                        >
+                        <input
+                            type="number"
+                            step="0.1"
+                            id="distance"
+                            required
+                            class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-purple-400 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-2"
+                            >Pace (min/mile)</label
+                        >
+                        <input
+                            type="text"
+                            id="pace"
+                            placeholder="8:30"
+                            required
+                            class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-purple-400 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-2">Run Type</label>
+                        <select
+                            id="runType"
+                            required
+                            class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-purple-400 focus:outline-none"
+                        >
+                            <option value="easy">Easy</option>
+                            <option value="tempo">Tempo</option>
+                            <option value="long">Long</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-2">Surface</label>
+                        <select
+                            id="surface"
+                            required
+                            class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-purple-400 focus:outline-none"
+                        >
+                            <option value="road">Road</option>
+                            <option value="trail">Trail</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button
+                            type="submit"
+                            class="w-full px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all transform hover:scale-105"
+                        >
+                            Add Run
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+                >
+                    <h2 class="text-xl font-bold mb-4">Weekly Mileage Trend</h2>
+                    <div class="chart-container">
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+                >
+                    <h2 class="text-xl font-bold mb-4">Surface Distribution</h2>
+                    <div class="chart-container">
+                        <canvas id="surfaceChart"></canvas>
+                    </div>
+                </div>
+                <div
+                    class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+                >
+                    <h2 class="text-xl font-bold mb-4">
+                        Run Type Distribution
+                    </h2>
+                    <div class="chart-container">
+                        <canvas id="runTypeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Runs -->
+            <div
+                class="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
+            >
+                <h2 class="text-2xl font-bold mb-4">Recent Runs</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-white/20">
+                                <th class="text-left py-2">Date</th>
+                                <th class="text-left py-2">Distance</th>
+                                <th class="text-left py-2">Pace</th>
+                                <th class="text-left py-2">Type</th>
+                                <th class="text-left py-2">Surface</th>
+                                <th class="text-left py-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="runsTable" class="divide-y divide-white/10">
+                            <!-- Runs will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script defer src="script.js"></script>
+    </body>
+</html>
+
